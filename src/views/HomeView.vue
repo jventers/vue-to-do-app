@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from "vue";
 import ToDoList from "../components/ToDoList.vue";
-import ToDoItem from "../components/ToDoItem.vue";
+import ToDoListItem from "../components/ToDoListItem.vue";
 
 // Local state
 interface ToDo {
@@ -59,64 +59,39 @@ function toggleItem(id: number) {
 </script>
 
 <template>
-  <div class="main-view__wrapper">
-    <main class="main-view">
-      <!-- Uncompleted To-Dos -->
-      <ToDoList title="To-Do">
-        <ToDoItem
-          v-for="todo in uncompleted"
-          :key="todo.id"
-          :autofocus="todo.id === newlyCreatedId"
-          v-bind="todo"
-          v-model:label="todo.label"
-          @delete="deleteItem"
-          @toggle="toggleItem"
-        />
-        <li class="add-btn__wrapper">
-          <!-- Add Button -->
-          <button class="add-btn" @click="addToDoItem">
-            <span class="add-btn__icon">➕</span>Add To-Do Item
-          </button>
-        </li>
-      </ToDoList>
+  <!-- Uncompleted To-Dos -->
+  <ToDoList title="To-Do">
+    <ToDoListItem
+      v-for="todo in uncompleted"
+      :key="todo.id"
+      :autofocus="todo.id === newlyCreatedId"
+      v-bind="todo"
+      v-model:label="todo.label"
+      @delete="deleteItem"
+      @toggle="toggleItem"
+    />
+    <li class="add-btn__wrapper">
+      <!-- Add Button -->
+      <button class="add-btn" @click="addToDoItem">
+        <span class="add-btn__icon">➕</span>Add To-Do Item
+      </button>
+    </li>
+  </ToDoList>
 
-      <!-- Completed To-Dos -->
-      <ToDoList v-if="completed.length" title="Completed">
-        <ToDoItem
-          v-for="todo in completed"
-          :key="todo.id"
-          v-bind="todo"
-          v-model:label="todo.label"
-          @delete="deleteItem"
-          @toggle="toggleItem"
-        />
-      </ToDoList>
-    </main>
-  </div>
+  <!-- Completed To-Dos -->
+  <ToDoList v-if="completed.length" title="Completed">
+    <ToDoListItem
+      v-for="todo in completed"
+      :key="todo.id"
+      v-bind="todo"
+      v-model:label="todo.label"
+      @delete="deleteItem"
+      @toggle="toggleItem"
+    />
+  </ToDoList>
 </template>
 
 <style lang="scss">
-.main-view {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
-  max-width: 800px;
-  color: #fff;
-  padding: 2rem 0;
-
-  &__wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    // height of viewport minus header and footer
-    min-height: calc(100vh - 7rem);
-  }
-}
 .add-btn {
   display: flex;
   justify-content: flex-start;
